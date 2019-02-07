@@ -7,7 +7,7 @@ class HighScoreManager(val sharedPreferences: SharedPreferences) {
     fun getHighScore(puzzleId: Int) = sharedPreferences.getInt("$HIGH_SCORE_KEY-${puzzleId}", 0)
 
     fun writeHighScore(puzzleId: Int, newScore: Int) {
-        sharedPreferences.edit().putInt("$HIGH_SCORE_KEY-${puzzleId}", newScore)
+        sharedPreferences.edit().putInt("$HIGH_SCORE_KEY-${puzzleId}", newScore).apply()
     }
 
     companion object {
