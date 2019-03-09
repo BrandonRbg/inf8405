@@ -9,7 +9,7 @@ import android.content.IntentFilter
 import android.support.v4.content.LocalBroadcastManager.*
 
 
-class BLEWrapper(context: Context, val callback: ()-> Unit) {
+class BLEWrapper(context: Context, val callback: ()-> Unit, private val _devices:HashMap<String, BluetoothDevice> = HashMap<String, BluetoothDevice>()) {
 
 
     private val broadcastReceiver = object: BroadcastReceiver() {
@@ -22,7 +22,6 @@ class BLEWrapper(context: Context, val callback: ()-> Unit) {
 
     private val bluetoothAdapter: BluetoothAdapter
 
-    private val _devices = HashMap<String, BluetoothDevice>()
     val devices: HashMap<String, BluetoothDevice>
         get() {
             return _devices
