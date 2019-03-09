@@ -40,8 +40,11 @@ class BLEWrapper(context: Context, val callback: ()-> Unit) {
     private fun handleActionFound(intent: Intent) {
         val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
         if(device != null) {
-            _devices.putIfAbsent(device.address, device)
-            callback()
+
+            if(!_devices.containsKey(device.address)) {
+                _devices.put(device.address, device)
+                callback()
+            }
         }
     }
 
