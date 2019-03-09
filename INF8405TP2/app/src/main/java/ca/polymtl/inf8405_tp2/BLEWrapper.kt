@@ -10,7 +10,7 @@ import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.content.LocalBroadcastManager.*
 
 
-class BLEWrapper(context: Context) {
+class BLEWrapper(context: Context, val callback: ()-> Unit) {
 
 
     private val broadcastReceiver = object: BroadcastReceiver() {
@@ -41,6 +41,7 @@ class BLEWrapper(context: Context) {
         val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
         if(device != null) {
             _devices.putIfAbsent(device.address, device)
+            callback()
         }
     }
 
