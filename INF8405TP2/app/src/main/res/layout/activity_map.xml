@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:layout_height="match_parent"
-        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="?attr/backgroundColor">
+        android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
@@ -30,8 +29,6 @@
             android:text="Favoris"
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/favoritesButton"
-            android:textColor="?attr/primaryTextColor"
-            android:background="?attr/backgroundColor"
             app:layout_constraintTop_toBottomOf="@id/devicesList"
             app:layout_constraintBottom_toTopOf="@id/themeButton"
             app:layout_constraintLeft_toRightOf="@id/map"
@@ -40,8 +37,6 @@
             android:text="Changer le thème"
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:id="@+id/themeButton"
-            android:textColor="?attr/primaryTextColor"
-            android:background="?attr/backgroundColor"
             app:layout_constraintTop_toBottomOf="@id/favoritesButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/map"

@@ -133,6 +133,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
                     Type d'appareil: ${device.type}
                 """.trimIndent()
             alert {
+                setTheme(if (lightTheme) android.R.style.Theme_Material_Light_Dialog_Alert else android.R.style.Theme_Material_Dialog_Alert)
+
                 positiveButton("Partager") {
                     val shareIntent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -142,15 +144,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerC
                     }
                     startActivity(Intent.createChooser(shareIntent, "VIM App - Share Via"))
                 }
+
                 negativeButton("Comment y arriver?") {
                     val gmmIntentUri = Uri.parse("google.navigation:q=${device.latitude},${device.longitude}&mode=d")
                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                     mapIntent.`package` = "com.google.android.apps.maps"
                     startActivity(mapIntent)
                 }
+
                 neutralPressed("Ajouter aux favoris") {
                     devicesRepository.setStarred(device)
                 }
+
                 title = device.name
                 message = deviceInfo
             }.show()
