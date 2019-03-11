@@ -12,6 +12,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configureTheme()
+
         setContentView(R.layout.activity_splash_screen)
 
         Timer().schedule(3000) {

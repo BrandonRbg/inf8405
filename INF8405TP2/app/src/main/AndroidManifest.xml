@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ca.polymtl.inf8405_tp2">
+
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -22,14 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
         <activity
                 android:name=".MapActivity"
-                android:screenOrientation="landscape"
-                android:label="@string/title_activity_map">
+                android:label="@string/title_activity_map"
+                android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".FavoritesActivity">
         </activity>
     </application>
 

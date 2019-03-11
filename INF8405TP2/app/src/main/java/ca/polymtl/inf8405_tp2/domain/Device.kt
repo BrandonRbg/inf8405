@@ -1,13 +1,18 @@
 package ca.polymtl.inf8405_tp2.domain
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize()
 data class Device(
-    val latitude: Long,
-    val longitude: Long,
+    val latitude: Double,
+    val longitude: Double,
     val name: String,
     val address: String,
     val deviceClass: String,
-    val type: String
-)
+    val type: String,
+    val starred: Boolean
+) : Parcelable
 
 data class DeviceClass(
     val id: Int,

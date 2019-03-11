@@ -1,4 +1,4 @@
-package ca.polymtl.inf8405_tp2
+package ca.polymtl.inf8405_tp2.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -9,11 +9,11 @@ import android.content.IntentFilter
 import android.support.v4.content.LocalBroadcastManager.*
 
 
-class BLEWrapper(context: Context, val callback: ()-> Unit, private val _devices:HashMap<String, BluetoothDevice> = HashMap<String, BluetoothDevice>()) {
+class BLEWrapper(context: Context, val callback: (device: BluetoothDevice) -> Unit) {
 
-
-    private val broadcastReceiver = object: BroadcastReceiver() {
+    private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+            print(intent)
             when (intent?.action) {
                 BluetoothDevice.ACTION_FOUND -> handleActionFound(intent)
             }
@@ -22,28 +22,18 @@ class BLEWrapper(context: Context, val callback: ()-> Unit, private val _devices
 
     private val bluetoothAdapter: BluetoothAdapter
 
-    val devices: HashMap<String, BluetoothDevice>
-        get() {
-            return _devices
-        }
-
     init {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if(!bluetoothAdapter.isEnabled) {
+        if (!bluetoothAdapter.isEnabled) {
             bluetoothAdapter.enable()
         }
-        getInstance(context).registerReceiver(broadcastReceiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
+        context.registerReceiver(broadcastReceiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
     }
 
     private fun handleActionFound(intent: Intent) {
         val device: BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-        if(device != null) {
-
-            if(!_devices.containsKey(device.address)) {
-                _devices.put(device.address, device)
-                callback()
-            }
-        }
+        callback(device)
+        print(device)
     }
 
     fun scan(context: Context) {
@@ -51,6 +41,6 @@ class BLEWrapper(context: Context, val callback: ()-> Unit, private val _devices
     }
 
     fun dispose(context: Context) {
-        getInstance(context).unregisterReceiver(broadcastReceiver)
+        context.unregisterReceiver(broadcastReceiver)
     }
 }

@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="50dp"
-        tools:context=".SplashScreenActivity" android:background="@color/colorPrimaryDark">
+        tools:context=".SplashScreenActivity" android:background="?attr/backgroundColor">
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp" app:srcCompat="@drawable/vim" android:id="@+id/imageView"
@@ -17,6 +17,7 @@
             android:text="VIM App"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/vimAppLabel"
+            android:textColor="?attr/primaryTextColor"
             app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView" app:layout_constraintBottom_toTopOf="@id/developersLabel"
             android:textSize="60sp"/>
@@ -24,6 +25,7 @@
     <TextView
             android:text="Par Brandon Roberge et Simon Lacasse"
             android:textAlignment="center"
+            android:textColor="?attr/primaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/developersLabel"
             app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
@@ -34,6 +36,7 @@
             android:text="Version 78.32.12.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/versionLabel"
+            android:textColor="?attr/secondaryTextColor"
             app:layout_constraintRight_toRightOf="parent" app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/developersLabel" app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="20sp"/>

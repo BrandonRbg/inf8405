@@ -18,19 +18,20 @@ class DevicesDatabaseHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "Device
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.createTable("Devices", true,
+        db.createTable("devices", true,
             "id" to INTEGER + PRIMARY_KEY + UNIQUE,
             "latitude" to REAL,
             "longitude" to REAL,
             "name" to TEXT,
             "address" to TEXT,
             "deviceClass" to TEXT,
-            "type" to TEXT
+            "type" to TEXT,
+            "starred" to INTEGER
         )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.dropTable("Devices", true)
+        db.dropTable("devices", true)
 
         onCreate(db)
     }
