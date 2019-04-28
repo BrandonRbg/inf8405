@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "109419643565",
+    "firebase_url": "https://inf8405-45cca.firebaseio.com",
+    "project_id": "inf8405-45cca",
+    "storage_bucket": "inf8405-45cca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109419643565:android:60f8a84e3d29cd96",
+        "android_client_info": {
+          "package_name": "ca.polymtl.inf8405"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "109419643565-3qbrai0qtqjl9ph7mp13ki2ghjbi9ts2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdkhnAwtZ6JH2SY4F8WFI6q7sL0YJIZAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109419643565-3qbrai0qtqjl9ph7mp13ki2ghjbi9ts2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
