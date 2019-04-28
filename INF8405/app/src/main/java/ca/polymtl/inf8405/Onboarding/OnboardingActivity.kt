@@ -2,7 +2,7 @@ package ca.polymtl.inf8405.Onboarding
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import ca.polymtl.inf8405.ChatView.ChatViewActivity
+import ca.polymtl.inf8405.Main.ChatView.ChatViewFragment
 import ca.polymtl.inf8405.R
 import ca.polymtl.inf8405.Utils.currentUser
 import dagger.android.AndroidInjection
@@ -22,7 +22,7 @@ class OnboardingActivity : AppCompatActivity() {
             val text = usernameEdit.text.toString()
             if (text.isNotEmpty()) {
                 currentUser = text
-                startActivity(intentFor<ChatViewActivity>())
+                startActivity(intentFor<ChatViewFragment>())
             }
         }
     }

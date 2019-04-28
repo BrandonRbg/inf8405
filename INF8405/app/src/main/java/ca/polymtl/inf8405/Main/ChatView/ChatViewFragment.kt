@@ -1,4 +1,4 @@
-package ca.polymtl.inf8405.ChatView
+package ca.polymtl.inf8405.Main.ChatView
 
 import android.content.Context
 import android.hardware.Sensor
@@ -6,30 +6,33 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import ca.polymtl.inf8405.BR
 import ca.polymtl.inf8405.Domain.Message
 import ca.polymtl.inf8405.R
 import ca.polymtl.inf8405.Services.MessagingService
-import ca.polymtl.inf8405.Utils.buildDrawer
 import ca.polymtl.inf8405.Utils.currentUser
 import com.github.nitrico.lastadapter.BaseType
 import com.github.nitrico.lastadapter.LastAdapter
 import com.github.nitrico.lastadapter.TypeHandler
 import com.google.firebase.firestore.ListenerRegistration
-import com.mikepenz.materialdrawer.Drawer
-import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_chat_view.*
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_chat_view.view.*
 import javax.inject.Inject
 
-class ChatViewActivity : AppCompatActivity(), SensorEventListener {
+class ChatViewFragment : Fragment(), SensorEventListener {
 
     @Inject
     lateinit var messagingService: MessagingService
 
     lateinit var adapter: LastAdapter
     lateinit var sensorManager: SensorManager
+    lateinit var messagesRv: RecyclerView
     var lightSensor: Sensor? = null
     var gravitySensor: Sensor? = null
     var currentLight: Float = 0.0f
@@ -38,22 +41,18 @@ class ChatViewActivity : AppCompatActivity(), SensorEventListener {
     var messageListenerRegistration: ListenerRegistration? = null
     var messages = mutableListOf<Message>()
 
-    private lateinit var drawer: Drawer
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat_view)
+        val view = inflater.inflate(R.layout.fragment_chat_view, container, false)
 
-        setSupportActionBar(toolbar)
-
-        drawer = buildDrawer(toolbar, 0)
-
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = context?.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
         gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
-        messagesRv.layoutManager = LinearLayoutManager(this).apply {
+        messagesRv = view.messagesRv
+
+        messagesRv.layoutManager = LinearLayoutManager(context).apply {
             stackFromEnd = true
         }
 
@@ -61,7 +60,7 @@ class ChatViewActivity : AppCompatActivity(), SensorEventListener {
             .handler(object : TypeHandler {
                 override fun getItemType(item: Any, position: Int): BaseType? =
                     BaseType(
-                        if (messages[position].sender == currentUser)
+                        if (messages[position].sender == context?.currentUser)
                             R.layout.item_message_sent
                         else
                             R.layout.item_message_received,
@@ -72,29 +71,36 @@ class ChatViewActivity : AppCompatActivity(), SensorEventListener {
 
         listenForMessages()
 
-        sendButton.setOnClickListener {
-            val text = messageEdit.text.toString()
+        view.sendButton.setOnClickListener {
+            val text = view.messageEdit.text.toString()
             if (text.isNotEmpty()) {
-                messagingService.sendMessage(text, currentUser)
-                messageEdit.setText("")
+                messagingService.sendMessage(text, context?.currentUser ?: "")
+                view.messageEdit.setText("")
             }
         }
 
-        temperatureButton.setOnClickListener {
+        view.temperatureButton.setOnClickListener {
             if (lightSensor == null) {
-                messageEdit.setText("Premièrement, ton device supporte pas la lumière")
+                view.messageEdit.setText("Premièrement, ton device supporte pas la lumière")
             } else {
-                messageEdit.setText("Premièrement, check comment que mon device est lumineux: $currentLight lx")
+                view.messageEdit.setText("Premièrement, check comment que mon device est lumineux: $currentLight lx")
             }
         }
 
-        gravityButton.setOnClickListener {
+        view.gravityButton.setOnClickListener {
             if (gravitySensor == null) {
-                messageEdit.setText("Ton device supporte pas la gravité")
+                view.messageEdit.setText("Ton device supporte pas la gravité")
             } else {
-                messageEdit.setText("Check ma gravité! $currentGravity m/s2")
+                view.messageEdit.setText("Check ma gravité! $currentGravity m/s2")
             }
         }
+
+        return view
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onPause() {
@@ -130,14 +136,6 @@ class ChatViewActivity : AppCompatActivity(), SensorEventListener {
                 Sensor.TYPE_LIGHT -> currentLight = it.values[0]
                 Sensor.TYPE_GRAVITY -> currentGravity = Math.sqrt(it.values.map { it * it }.sum().toDouble()).toFloat()
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        if (drawer.isDrawerOpen) {
-            drawer.closeDrawer()
-        } else {
-            super.onBackPressed()
         }
     }
 }
