@@ -72,6 +72,8 @@ dependencies {
 
     // Material drawer
     implementation "com.mikepenz:materialdrawer:6.0.9"
+
+    implementation 'eo.view:batterymeter:2.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

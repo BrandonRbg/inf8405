@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import ca.polymtl.inf8405.Main.ChatView.ChatViewFragment
 import ca.polymtl.inf8405.Main.MapView.MapViewFragment
+import ca.polymtl.inf8405.Main.StatsView.StatsViewFragment
 import ca.polymtl.inf8405.R
 import ca.polymtl.inf8405.Utils.buildDrawer
 import com.mikepenz.materialdrawer.Drawer
@@ -41,7 +42,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 R.id.fragmentContainer,
                 when (id) {
                     0 -> ChatViewFragment()
-                    else -> MapViewFragment()
+                    1 -> MapViewFragment()
+                    else -> StatsViewFragment()
                 }
             ).commit()
         if (drawer.isDrawerOpen) {
