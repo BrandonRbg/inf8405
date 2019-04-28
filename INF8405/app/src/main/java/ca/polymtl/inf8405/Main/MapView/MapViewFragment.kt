@@ -7,17 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ca.polymtl.inf8405.R
+import ca.polymtl.inf8405.Services.UserService
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_map_view.view.*
+import javax.inject.Inject
 
 
 class MapViewFragment : Fragment() {
 
     private lateinit var map: GoogleMap
     private lateinit var mapView: MapView
+
+    @Inject
+    lateinit var userService: UserService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +44,27 @@ class MapViewFragment : Fragment() {
 
         mapView.getMapAsync {
             map = it
+            listenForUsers()
         }
         return view
+    }
+
+    fun listenForUsers() {
+        userService.listenForUsers {
+            map.clear()
+            if (userService.lastLocation != null) {
+                val currentLatLng =
+                    LatLng(userService.lastLocation?.latitude ?: 0.0, userService.lastLocation?.longitude ?: 0.0)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17f))
+            }
+            it.forEach { user ->
+                map.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(user.latitude, user.longitude))
+                        .title(user.username)
+                )
+            }
+        }
     }
 
     override fun onAttach(context: Context?) {
