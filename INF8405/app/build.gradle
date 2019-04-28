@@ -67,6 +67,9 @@ dependencies {
     kapt 'com.google.dagger:dagger-android-processor:2.13'
     compile 'com.google.dagger:dagger-android:2.15'
     compile 'com.google.dagger:dagger-android-support:2.13'
+
+    // Material drawer
+    implementation "com.mikepenz:materialdrawer:6.0.9"
 }
 
 apply plugin: 'com.google.gms.google-services'
