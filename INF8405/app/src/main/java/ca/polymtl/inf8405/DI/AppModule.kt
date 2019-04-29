@@ -44,5 +44,4 @@ class AppModule {
         fusedLocationProviderClient: FusedLocationProviderClient,
         context: Context
     ) = UserService(firebaseFirestore, fusedLocationProviderClient, context)
-
 }

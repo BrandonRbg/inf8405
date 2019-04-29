@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
     buildToolsVersion '28.0.3'
     dataBinding.enabled true
 }
@@ -75,6 +79,8 @@ dependencies {
     implementation "com.mikepenz:materialdrawer:6.0.9"
 
     implementation 'eo.view:batterymeter:2.0.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

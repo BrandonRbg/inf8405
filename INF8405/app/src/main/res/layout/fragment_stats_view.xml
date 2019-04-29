@@ -8,6 +8,17 @@
         tools:context=".Main.StatsView.StatsViewFragment"
         android:layout_margin="20dp">
 
+    <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/batteryLevelChart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/batteryMeterView"
+    >
+
+    </com.github.mikephil.charting.charts.LineChart>
 
     <eo.view.batterymeter.BatteryMeterView
             android:id="@+id/batteryMeterView"
@@ -22,7 +33,7 @@
             app:batteryMeterIsCharging="false"
             app:batteryMeterTheme="rounded"
             app:batteryMeterUnknownColor="#e0e0e0" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/batteryLevelChart"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@id/batteryLevelText"
