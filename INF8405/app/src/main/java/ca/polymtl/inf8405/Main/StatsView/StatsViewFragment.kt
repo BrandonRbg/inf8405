@@ -4,15 +4,14 @@ package ca.polymtl.inf8405.Main.StatsView
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.os.BatteryManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ca.polymtl.inf8405.Domain.BatteryLevel
 import ca.polymtl.inf8405.R
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -20,9 +19,10 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_stats_view.view.*
 import java.util.*
 
+
 class StatsViewFragment : Fragment() {
 
-    val batteryLevels = mutableListOf<BatteryLevel>()
+    private val firstTimestamp = Date().time
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +46,41 @@ class StatsViewFragment : Fragment() {
 
     fun setupBatteryLevelChart(view: View) {
         view.batteryLevelChart.setDrawGridBackground(false)
+        view.batteryLevelChart.legend.isEnabled = false
+        view.batteryLevelChart.description.isEnabled = false
+        view.batteryLevelChart.getAxisLeft().setEnabled(true)
+        view.batteryLevelChart.getAxisLeft().axisMinimum = 0f
+        view.batteryLevelChart.getAxisLeft().axisMaximum = 100f
+        view.batteryLevelChart.getAxisLeft().setSpaceTop(40f)
+        view.batteryLevelChart.getAxisLeft().setSpaceBottom(40f)
+        view.batteryLevelChart.getAxisRight().setEnabled(false)
+        view.batteryLevelChart.getXAxis().setEnabled(false)
+        view.batteryLevelChart.animateX(2500)
+        view.batteryLevelChart.data =
+            LineData(
+                LineDataSet(
+                    mutableListOf(),
+                    "Battery Level"
+                ).apply {
+                    setMode(LineDataSet.Mode.LINEAR)
+                    setCubicIntensity(0.2f)
+                    setDrawFilled(true)
+                    setDrawCircles(false)
+                    setDrawValues(false)
+                    setLineWidth(1.8f)
+                    setCircleRadius(4f)
+                    setCircleColor(Color.WHITE)
+                    setHighLightColor(Color.rgb(244, 117, 117))
+                    setColor(Color.WHITE)
+                    setFillColor(Color.rgb(104, 241, 175))
+                    setFillAlpha(100)
+                    setDrawHorizontalHighlightIndicator(false)
+                    setFillFormatter { dataSet, dataProvider ->
+                        view.batteryLevelChart.getAxisLeft().getAxisMinimum()
+                    }
+
+                }
+            )
     }
 
     fun updateBatteryView(view: View) {
@@ -58,18 +93,9 @@ class StatsViewFragment : Fragment() {
             level / scale.toFloat()
         } ?: 0.0f
         val batteryLevel = (batteryPct * 100).toInt()
-        batteryLevels.add(BatteryLevel(batteryLevel, Date().time))
-        view.batteryLevelChart.xAxis.axisMinimum = batteryLevels.first().timestamp.toFloat()
-        view.batteryLevelChart.xAxis.axisMaximum = batteryLevels.last().timestamp.toFloat()
-        view.batteryLevelChart.data =
-            LineData(
-                LineDataSet(
-                    batteryLevels.map { Entry(it.timestamp.toFloat(), it.level.toFloat()) },
-                    "Battery Level"
-                ).apply {
-                    axisDependency = YAxis.AxisDependency.LEFT
-                }
-            )
+        view.batteryLevelChart.data.addEntry(Entry((Date().time - firstTimestamp).toFloat(), batteryLevel.toFloat()), 0)
+        view.batteryLevelChart.data.notifyDataChanged()
+        view.batteryLevelChart.notifyDataSetChanged()
         view.batteryLevelChart.invalidate()
 
         view.batteryMeterView.chargeLevel = batteryLevel
