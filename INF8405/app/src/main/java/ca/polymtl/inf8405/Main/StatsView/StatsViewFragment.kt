@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.graphics.Paint
+import android.net.TrafficStats
 import android.os.BatteryManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,6 +36,7 @@ class StatsViewFragment : Fragment() {
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 updateBatteryView(view)
+                updateNetworkStats(view)
             }
         }, 0, 1_000)
         return view
@@ -105,4 +108,17 @@ class StatsViewFragment : Fragment() {
                 || status == BatteryManager.BATTERY_STATUS_FULL
 
     }
+
+    fun updateNetworkStats(view: View) {
+        view.networkHeader.paintFlags = view.networkHeader.paintFlags or Paint.UNDERLINE_TEXT_FLAG;
+
+        var uid = android.os.Process.myUid()
+        var downlinkStats = TrafficStats.getUidRxBytes(uid) / 1024
+        var uplinkStats = TrafficStats.getUidTxBytes(uid) / 1024
+        view.networkDownlinkBytes.text = "$downlinkStats kB"
+        view.networkUplinkBytes.text = "$uplinkStats kB"
+
+
+    }
+
 }
